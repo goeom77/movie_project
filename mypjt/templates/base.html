@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <title>Eom Movie</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap');
+
+    body {
+        font-family: 'Nanum Myeongjo', serif;
+        background-color: black;
+    }
+  </style>
+</head>
+<body class="bg-dark text-white">
+  <nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+      <img src="https://images.descentekorea.co.kr/contents/event/about_UMB/2021_renew/ec/about_umbro_renew_topTxt.png" alt="#" width="50px">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <h3 class="nav-link active text-white">{{ user }}님, 환영합니다.</h3>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link active text-white" aria-current="page" href="{% url 'movies:index' %}">Home</a>
+          </li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'movies:create' %}">Create</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'accounts:update' %}">회원정보 변경</a>
+          </li>
+          <li class="nav-item">
+            <form action="{% url 'accounts:logout' %}" method="POST">
+              {% csrf_token %}
+              <input type="submit" value="회원탈퇴" class="nav-link text-white bg-dark border border-dark">
+            </form>
+          </li>
+          <li class="nav-item">
+            <form action="{% url 'accounts:delete' %}" method="POST">
+              {% csrf_token %}
+              <input type="submit" value="Logout" class="nav-link text-white bg-dark border border-dark">
+            </form>
+          </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'accounts:login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'accounts:signup' %}">Signup</a>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="https://www.justwatch.com/kr/%EC%98%81%ED%99%94">Watch</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {% block content %}
+  {% endblock content %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

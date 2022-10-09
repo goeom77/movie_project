@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="d-flex justify-content-center">DETAIL</h1>
+    <hr>
+    <div class="d-flex justify-content-center">
+        <div class="card mb-3 col-9 ">
+            <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ movie.poster_url }}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body text-dark">
+                <h3 class="card-title">{{ movie.title }}</h3>
+                <p class="card-text">Release Dates : {{ movie.release_date }}</p>
+                <p class="card-text">Genre : {{ movie.genre }}</p>
+                <p class="card-text">Score : {{ movie.score }}</p> 
+                <p class="card-text">{{ movie.description }}</p>
+                <br>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary"><a href="{% url 'movies:update' movie.pk %}" class="text-decoration-none text-dark fs-5">UPDATE</a></button>
+                    <button type="button" class="btn btn-outline-secondary"><a href="{% url 'movies:delete' movie.pk %}" class="text-decoration-none text-dark fs-5">DELETE</a></button>
+                </div>
+                <br>
+                <a href="{% url 'movies:index' %}" class="text-decoration-none text-dark fs-5">BACK</a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <h4>댓글 목록</h4>
+    {% if comments %}
+        <p>{{ comments|length }}개의 댓글이 있습니다.</p>
+    {% endif %}
+    <ul style="list-style-type: square;">
+        {% for comment in comments %}
+            <li class="d-flex">
+                {{comment.user}} : {{comment.content}}&nbsp&nbsp
+
+                {% if request.user == comment.user %}
+                    <form action="{% url 'movies:comments_delete' movie.pk comment.pk %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="DEL" class="btn btn-outline-secondary sm" style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .2rem; --bs-btn-font-size: .5rem;">
+                    </form>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>댓글이 없습니다.</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    {% if request.user.is_authenticated %}
+        <form action="{% url 'movies:comments_create' movie.pk %}" method="POST">
+            {% csrf_token %}
+            {{ comment_form }}
+            <input type="submit" value="댓글입력">
+        </form>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">[댓글을 작성하려면 로그인하세요.]</a>
+    {% endif %}
+{% endblock content %}

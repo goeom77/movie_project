@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="d-flex justify-content-center">Movies</h1>
+    <hr>
+    <div class="d-flex justify-content-center">
+        <div class="container row ">
+            {% for movie in movies %}
+                <div class="card col-4">
+                    <img src="{{ movie.poster_url }}" class="card-img-top mt-2" width="100%" alt="#">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'movies:detail' movie.pk %}" class="text-decoration-none text-dark fs-5">{{ movie.title }}</a></h5>
+                        <p class="card-text text-dark"> 💕 {{ movie.score }} </p>
+                    </div>
+                </div>
+            {% endfor %}
+            <hr>
+        </div>
+    </div>
+{% endblock content %}

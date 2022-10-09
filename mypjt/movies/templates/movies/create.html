@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="m-5">
+  <h1 class="d-flex justify-content-center">CREATE</h1>
+  <form action="{% url 'movies:create' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="btn btn-outline-secondary text-white">
+  </form>
+  <hr>
+  <button type="button" class="btn btn-outline-secondary"><a href="{% url 'movies:index' %}" class="text-decoration-none text-white fs-5">BACK</a></a></button>
+</div>
+{% endblock content %}
