@@ -26,7 +26,7 @@
         <ul class="navbar-nav">
           {% if request.user.is_authenticated %}
             <li class="nav-item">
-              <h3 class="nav-link active text-white">{{ user }}님, 환영합니다.</h3>
+              <a class="nav-link active text-white" href="{% url 'accounts:profile' user.username %}">{{ user }}님, 환영합니다.</a>
             </li>
           {% endif %}
           <li class="nav-item">

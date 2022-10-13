@@ -11,6 +11,15 @@
                     <div class="card-body">
                         <h5 class="card-title"><a href="{% url 'movies:detail' movie.pk %}" class="text-decoration-none text-dark fs-5">{{ movie.title }}</a></h5>
                         <p class="card-text text-dark"> 💕 {{ movie.score }} </p>
+                        <p class="card-text text-dark">follow:{{movie.like_users.all|length}}</p>
+                        <form action="{% url 'movies:likes' movie.pk %}" method="POST">
+                            {% csrf_token %}
+                            {% if request.user in movie.like_users.all %}
+                                <input type="submit" value="cancel">
+                            {% else %}
+                                <input type="submit" value="like">
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
             {% endfor %}

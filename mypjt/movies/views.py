@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
-from .models import Movie,Comment
+from .models import Movie, Comment
 from .forms import MovieForm, CommentForm
 
 # Create your views here.
@@ -91,3 +91,14 @@ def comments_delete(request, movie_pk, comment_pk):
         if request.user == comment.user:
             comment.delete()
         return redirect('movies:detail', movie_pk)
+
+@require_POST
+def likes(request, movie_pk):
+    if request.user.is_authenticated:
+        movie = Movie.objects.get(pk=movie_pk)
+        if movie.like_users.filter(pk=request.user.pk).exists():
+            movie.like_users.remove(request.user)
+        else:
+            movie.like_users.add(request.user)
+        return redirect('movies:index')
+    return redirect('movies:login')
